@@ -1,8 +1,4 @@
-# medium_clap
+# Medium Clap
 
-A new Flutter application.
-
-## Getting Started
-
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
+Project for introduction to animation in flutter.
+Project implements an hackish animation of medium clap animation.
