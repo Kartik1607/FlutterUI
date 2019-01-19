@@ -1,4 +1,4 @@
-# flutter_async
+# Flutter Async
 
 Flutter app showing how to use **Isolates** to do heavy task in background and make flutter *butterly smooth* .
 To learn more, checkout my article on medium [here](https://blog.usejournal.com/flutter-async-beginner-friendly-guide-for-heavy-lifting-operations-cf8ec81833d7)
