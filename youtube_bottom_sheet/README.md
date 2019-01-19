@@ -1,6 +1,8 @@
-# youtube_bottom_sheet
+# Youtube Bottom Sheet
 
-A new Flutter application.
+Implementaion of **Youtube** sliding down video player using flutter's **Staggered Animations**.
+
+![Image](https://media.giphy.com/media/9P5cmY0ZmweQzFjAzr/giphy.gif)
 
 ## Getting Started
 
