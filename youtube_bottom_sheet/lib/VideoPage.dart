@@ -46,6 +46,23 @@ class VideoPageState extends State<VideoPage> with TickerProviderStateMixin {
     _animationController = widget.videoMinimizeAnimationController ??
         AnimationController(
             vsync: this, duration: const Duration(milliseconds: 700));
+    _animationController.addStatusListener((status) {
+      print(status);
+      switch (status) {
+        case AnimationStatus.completed:
+          if (_animationController.value == 1) {
+            _amountDragged = MediaQuery.of(context).size.height;
+          }
+          break;
+        case AnimationStatus.dismissed:
+          if (_animationController.value == 0) {
+            _amountDragged = 0;
+          }
+          break;
+        default:
+          break;
+      }
+    });
   }
 
   @override
@@ -101,26 +118,32 @@ class VideoPageState extends State<VideoPage> with TickerProviderStateMixin {
               body: Column(
                 children: <Widget>[
                   GestureDetector(
-                    onTap: () {
-                      switch (_animationController.status) {
-                        case AnimationStatus.completed:
-                          _animationController.reverse();
-                          break;
-                        default:
-                          _animationController.forward();
-                      }
-                    },
                     onVerticalDragUpdate: (drag) {
-                      _animationController.stop(canceled: true);
-                      setState(() {
-                        _amountDragged -= drag.delta.dy;
-                      });
+                      print(_amountDragged);
+                      double _maxHeight = MediaQuery.of(context).size.height;
+                      _amountDragged += drag.delta.dy;
+                      if (_amountDragged > _maxHeight)
+                        _amountDragged = _maxHeight;
+                      else if (_amountDragged < 0) _amountDragged = 0;
+                      double animationValue = _amountDragged / _maxHeight;
+                      _animationController.value = animationValue;
+                    },
+                    onVerticalDragEnd: (drag) {
+                      double flingDy = drag.velocity.pixelsPerSecond.dy;
+                      if (flingDy > 0) {
+                        _animationController.forward();
+                      } else if (flingDy < 0) {
+                        _animationController.reverse();
+                      } else {
+                         double _maxHeight = MediaQuery.of(context).size.height;
+                         if (_amountDragged > _maxHeight / 2) _animationController.forward();
+                         else _animationController.reverse();
+                      }
                     },
                     child: Container(
                       color: Colors.black54,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        
                         children: <Widget>[
                           SizedBox(
                               height: _videoHeightAnimation.value,
@@ -137,7 +160,9 @@ class VideoPageState extends State<VideoPage> with TickerProviderStateMixin {
                                   overflow: TextOverflow.ellipsis,
                                   textAlign: TextAlign.start,
                                   maxLines: 1,
-                                  style: TextStyle(color: Colors.white,),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
                             ),

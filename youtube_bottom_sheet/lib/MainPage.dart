@@ -21,7 +21,7 @@ class MainPageState extends State<MainPage> {
       widget.videoMinimizeAnimationController.addListener(() {
         setState(() {});
       });
-      bottomNavigationBarTween = Tween(begin: 0.0, end: 56.0);
+      bottomNavigationBarTween = Tween(begin: 56.0, end: 0.0);
     }
   }
 
@@ -51,10 +51,10 @@ class MainPageState extends State<MainPage> {
     final bottomHeight = bottomNavigationBarTween != null
         ? bottomNavigationBarTween
             .evaluate(widget.videoMinimizeAnimationController)
-        : 56.0;
+        : 0.0;
     return Scaffold(
-        bottomNavigationBar:
-            SizedBox(height: bottomHeight, child: _bottomNavBar()),
+        bottomNavigationBar: Transform.translate(
+            offset: Offset(0.0, bottomHeight), child: _bottomNavBar()),
         body: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
